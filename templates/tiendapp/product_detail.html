@@ -2,13 +2,17 @@
 
 {% block content %}
 
+<style>
+    .d-flex .w-100 img {width: 100%;}
+</style>
+
 <div class="d-flex">
     <div class="w-100 ">
-        <img src="" />
+        <img src="{{ product.image.url }}" />
     </div>
     <div class="w-100 d-flex flex-column">
-        <h1>Titulo</h1>
-        <p>Descripcion</p>
+        <h1>{{ product.name }}</h1>
+        <p>{{ product.description }}</p>
         <a class="btn btn-primary">Anadir a carrito</a>
     </div>
 </div>

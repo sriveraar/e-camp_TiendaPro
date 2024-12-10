@@ -1,16 +1,24 @@
 {% extends 'layout.html' %}
 {% block content %}
 
+<style>
+    .card a img {width: 100%;}
+</style>
+
 <div class="d-flex flex-wrap row-cols-4">
 
-    {% for pr in producto %}
-    <div class="card p-2">
-        <div class="card">
-            <img>
-            <div class="card-body">
-                <h2 class="card-tittle">Producto 1</h2>
-                <div class="card-text">Loremp ipsum...</div>
-                <a class="btn btn-primary">Añadir al carrito</a>
+    {% for pr in products %}
+    <div class="col p-2">
+        <div class="card p-2">
+            <div class="card">
+                <a href="product/{{ pr.sku }}">
+                    <img src="{{ pr.thumbnail.url }}">
+                </a>
+                <div class="card-body">
+                    <h2 class="card-tittle">{{ pr.name }}</h2>
+                    <div class="card-text">{{ pr.description }}</div>
+                    <a class="btn btn-primary">Añadir al carrito</a>
+                </div>
             </div>
         </div>
     </div>
