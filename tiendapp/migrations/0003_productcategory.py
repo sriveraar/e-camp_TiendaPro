@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='ProductCategory',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('Category', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='tiendapp.category')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='tiendapp.category')),
                 ('product', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='tiendapp.product')),
             ],
         ),

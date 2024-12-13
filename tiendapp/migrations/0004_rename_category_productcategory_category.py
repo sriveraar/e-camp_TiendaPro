@@ -8,11 +8,3 @@ class Migration(migrations.Migration):
     dependencies = [
         ('tiendapp', '0003_productcategory'),
     ]
-
-    operations = [
-        migrations.RenameField(
-            model_name='productcategory',
-            old_name='Category',
-            new_name='category',
-        ),
-    ]
