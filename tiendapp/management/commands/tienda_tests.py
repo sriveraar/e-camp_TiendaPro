@@ -33,6 +33,7 @@ class Command(BaseCommand):
             nuevo_customer.phone = "325252112"
             nuevo_customer.save()
             
+        print("Creando una orden para el customer: ")    
         nueva_order = Order.objects.filter(customer = nuevo_customer).first()
         if nueva_order is None:
             nueva_order = Order()

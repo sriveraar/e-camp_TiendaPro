@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Product(models.Model):
     sku = models.CharField(max_length=64)
     name = models.CharField(max_length=256)
@@ -11,32 +12,48 @@ class Product(models.Model):
     image = models.ImageField(upload_to="products_image/")
     create_date = models.DateField()
     stock = models.DecimalField(decimal_places=2, max_digits=6)
-    
+
     def __str__(self):
         return self.name
-    
+
+
 class Category(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField()
-    
+
     def __str__(self):
         return self.name
-    
+
+
 class ProductCategory(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    
+
     def __str__(self):
         return self.category.name + " > " + self.product.name
-    
+
+
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.PROTECT)
     billing_address = models.TextField()
     shipping_address = models.TextField()
     phone = models.CharField(max_length=64)
-    
+
     def __str__(self):
         return self.user.username + " Teléfono:" + self.phone
+
+    def get_order(self):
+        # Verifica si cliente self, tiene una orden
+        nueva_order = Order.objects.filter(customer = self).first()
+        # Si nueva_order No es None, lo retornamos
+        if nueva_order is None:
+            # Si nueva_order is None, lo creamos
+            nueva_order = Order()
+            nueva_order.customer = self
+            nueva_order.shipping_address = self.shipping_address
+            nueva_order.status = "PENDIENTE"
+            nueva_order.save()
+        return nueva_order
 
 class Order(models.Model):
     # CUSTOMER tiene muchas ORDERS
