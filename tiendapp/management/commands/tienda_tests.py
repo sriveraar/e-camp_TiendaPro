@@ -13,6 +13,7 @@ class Command(BaseCommand):
         print("Creando un cliente: ")
         nuevo_user = User.objects.filter(username = "hanslam@gmail.com").first()
         if nuevo_user is None:
+            #Inicio de la creación de un usuario
             nuevo_user.first_name = "Hans"
             nuevo_user.last_name = "Lambda"
             nuevo_user.username = "hanslam@gmail.com"
