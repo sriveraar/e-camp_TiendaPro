@@ -14,8 +14,14 @@ def v_index(request):
 
 
 def v_cart(request):
+    customer_obj = Customer.objects.get(user = request.user)
+    
+    order_current = customer_obj.get_current_order()
+    # order_current tipo: Order
+    details = OrderDetail.objects.filter(order = order_current)
+    
     context = {
-        "items": [None, None, None, None]
+        "items": details
     }
     return render(request, "tiendapp/cart.html", context)
 
@@ -32,7 +38,7 @@ def v_product_detail(request, code):
     # sug, posee a las sugerencias, pero necesito los ids de los productos
     sug_ids = [ss.product.id for ss in sug]
     extras = Product.objects.filter(id__in = sug_ids)
- 
+
     context = {
         "product": product_obj,
         "extras": extras
@@ -41,6 +47,9 @@ def v_product_detail(request, code):
     return render(request, "tiendapp/product_detail.html", context)
 
 def v_add_to_cart(request, code):
+    if not request.user.is_authenticated:
+        return redirect("sign/in")
+    print(f"Código SKU recibido: {repr(code)}")
     product_obj = Product.objects.get(sku = code)
     # request.user, guarda variables de sesión
     customer_obj = Customer.objects.get(user = request.user)
@@ -56,9 +65,23 @@ def v_add_to_cart(request, code):
     else: # Crear item en carro
         detail_obj = OrderDetail()
         detail_obj.product = product_obj
-        detail_obj.order = order_current
+        detail_obj.order = order_current    
         detail_obj.quantity = 1
         detail_obj.price = product_obj.price
         detail_obj.save()
-    
     return redirect("/cart")
+
+def v_remove_from_cart(request, code):
+    # Eliminar del carrito
+    product_obj = Product.objects.get(sku = code)
+    
+    customer_obj = Customer.objects.get(user = request.user)
+    
+    current_order = customer_obj.get_current_order()
+    
+    item_cart = OrderDetail.objects.filter(order = current_order, product = product_obj).first()
+    
+    if item_cart is not None:
+        item_cart.delete()
+        
+    return redirect("/cart")    

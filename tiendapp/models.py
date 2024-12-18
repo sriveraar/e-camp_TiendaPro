@@ -42,11 +42,11 @@ class Customer(models.Model):
     def __str__(self):
         return self.user.username + " Teléfono:" + self.phone
 
-    def get_order(self):
+    def get_current_order(self):
         # Verifica si cliente self, tiene una orden
-        nueva_order = Order.objects.filter(customer = self).first(
+        nueva_order = Order.objects.filter(
             customer = self,
-            status = "PENDIENTE").first
+            status = "PENDIENTE").first()
         # Si nueva_order No es None, lo retornamos
         if nueva_order is None:
             # Si nueva_order is None, lo creamos

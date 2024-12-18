@@ -21,6 +21,7 @@
                     <a class="btn btn-outline-secondary" href="/sign_in">Sign in</a>
                     <a class="btn btn-outline-success" href="/sign_up">Sign up</a>
                     {% else %}
+                    <a class="btn btn-outline-warning" href="/cart">Cart</a>
                     <a class="btn btn-outline-danger" href="/sign_out">Sign out</a>
                     {% endif %}
                 </div>
@@ -39,8 +40,8 @@
                 {% endfor %}
             </div>
             {% endif %}
-            {% block content %}
-            {% endblock %}
+        {% block content %}
+        {% endblock %}
         </main>
 
     </div>
@@ -52,7 +53,7 @@
             </div>
             <div class="w-100">
                 <h4>Ubicanos</h4>
-                <p>Av. Siempre viva 232323</p>
+                <p>Av. Siempre viva 777 </p>
             </div>
         </div>
     </footer>
