@@ -2,24 +2,20 @@
 {% block content %}
 
 <div class="d-flex flex-wrap row-cols-4">
-
     {% for pr in products %}
     <div class="col p-2">
-        <div class="card p-2">
-            <div class="card">
-                <a href="product/{{ pr.sku }}">
-                    <img src="{{ pr.thumbnail.url }}">
-                </a>
-                <div class="card-body">
-                    <h2 class="card-tittle">{{ pr.name }}</h2>
-                    <div class="card-text">{{ pr.description }}</div>
-                    <a class="btn btn-primary">Añadir al carrito</a>
-                </div>
+        <div class="card">
+            <a href="product/{{ pr.sku }}">
+                <img src="{{ pr.thumbnail.url }}">
+            </a>
+            <div class="card-body">
+                <h2 class="card-tittle">{{ pr.name }}</h2>
+                <div class="card-text">{{ pr.description }}</div>
+                <a href="/add_to_cart/{{ pr.sku }}" class="btn btn-primary">Añadir al carrito</a>
             </div>
         </div>
     </div>
     {% endfor %}
 
 </div>
-
 {% endblock %}

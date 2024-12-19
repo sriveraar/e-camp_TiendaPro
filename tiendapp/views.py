@@ -28,9 +28,9 @@ def v_cart(request):
 
 def v_product_detail(request, code):
     product_obj = Product.objects.get(sku = code)
- 
+
     rels = ProductCategory.objects.filter(product = product_obj)
- 
+
     # rels_ids, guarda los ids categoria del producto
     rels_ids = [rr.category.id for rr in rels]
     sug = ProductCategory.objects.filter(
@@ -85,3 +85,16 @@ def v_remove_from_cart(request, code):
         item_cart.delete()
         
     return redirect("/cart")    
+
+def v_checkout(request):
+    customer = Customer.objects.get(user = request.user)
+    current_order = customer.get_current_order()
+    details = OrderDetail.objects.filter(order = current_order)
+    
+    context = {
+        "items": details,
+        "total_order": 121212,
+        "customer": customer
+    }
+    
+    return render(request, "tiendapp/checkout.html", context )

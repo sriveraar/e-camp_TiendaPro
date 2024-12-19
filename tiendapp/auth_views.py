@@ -35,7 +35,7 @@ def v_sign_up_create(request):
             nuevo_customer = Customer()
             nuevo_customer.user = nuevo_user  # Enlace
             nuevo_customer.billing_address = data["billing_address"]
-            nuevo_customer.shipping_address = "Av. liertad 12412. Concepción"
+            nuevo_customer.shipping_address = "Av. libertad 12412. Concepción"
             nuevo_customer.phone = data["phone"]
             nuevo_customer.save()
             
