@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Product, ProductCategory, Customer
 from tiendapp.models import OrderDetail, Order
+from django.contrib import messages
 
 # Create your views here.
 
@@ -48,7 +49,7 @@ def v_product_detail(request, code):
 
 def v_add_to_cart(request, code):
     if not request.user.is_authenticated:
-        return redirect("sign/in")
+        return redirect("sign_in")
     print(f"Código SKU recibido: {repr(code)}")
     product_obj = Product.objects.get(sku = code)
     # request.user, guarda variables de sesión
@@ -91,10 +92,35 @@ def v_checkout(request):
     current_order = customer.get_current_order()
     details = OrderDetail.objects.filter(order = current_order)
     
+    total = 0 #=> entero
+    # item => OrderDetail
+    for item in details:
+        subtotal = item.price * item.quantity
+        total = total + subtotal
+    
     context = {
         "items": details,
-        "total_order": 121212,
+        "total_order": total,
         "customer": customer
     }
     
     return render(request, "tiendapp/checkout.html", context )
+
+def v_checkout_end(request):
+    # Validar si request.method es Post
+    if request.method == "POST":
+        customer_obj = Customer.objects.get(user = request.user)
+        
+        # Capturar a la orden en cro del cliente en la variable: current_order
+        current_order = customer_obj.get_current_order()
+        
+        data = request.POST.copy()
+        
+        current_order.shipping_address = data["shipping_address"]
+        current_order.status = "PAGADO"
+        
+        current_order.save()
+        
+        messages.success(request, "La orden se ha procesado correctamente")
+        
+        return redirect("/")
